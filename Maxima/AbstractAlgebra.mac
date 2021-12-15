@@ -71,7 +71,8 @@ acom(u,v):=u.v+v.u;
 kill();
 
 aaplus: [a, A];
-bbplus: [B, b];
+bbplus: [B, b]; 
+/* B, b is same as a,A but during normal ordering, ordered in opposite order */
 
 /*-------------------------------*/
 /* DECLARE COMMUTATION RELATIONS */
