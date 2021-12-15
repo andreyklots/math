@@ -1,0 +1,121 @@
+/*---------------------------*/
+/* general symbolic algebra  */
+/*---------------------------*/
+
+/* load module for non-commutative algebra  */
+errcatch(
+          load(atensor)
+        );
+/* use symplectic algebra with the
+   commutation relation u.v-v.u=2*af(u,v) */
+init_atensor(symplectic);
+
+
+/*----------------------------------*/
+/* define commutator matrix */
+kill(CommutatorMatrix);
+CommutatorMatrix:CommutatorMatrix;
+
+/* declare that a list of variables does not commute */
+nonCommut(VarList) :=  block(
+    ListSize: length(VarList),
+    for Ind1:1 while Ind1<=ListSize do(
+       for Ind2:1 while Ind2<=ListSize do(
+          CommutatorMatrix[ VarList[Ind1], VarList[Ind2] ]: VarList[Ind1].VarList[Ind2]-VarList[Ind2].VarList[Ind1]
+                                                 )
+                                              )
+                            );
+
+/* declare that variables do commute */
+doCommut(VarList) :=  block(
+    ListSize: length(VarList),
+    for Ind1:1 while Ind1<=ListSize do(
+       for Ind2:1 while Ind2<=ListSize do(
+          CommutatorMatrix[ VarList[Ind1], VarList[Ind2] ]: 0
+                                         )
+                                      )
+                           );
+
+/* add a commutation relation
+   by defining a commutation relation [u,v]=c */
+addCommut(u,v,c) := block(                       
+                          CommutatorMatrix[ u, v ]:  c,
+                          CommutatorMatrix[ v, u ]: -c
+                         );
+
+infix("|");
+declare("|", rassociative);
+declare("|", lassociative);
+
+com(u,v):=u.v-v.u;
+acom(u,v):=u.v+v.u;
+
+
+/**********************************************/
+/*                                            */
+/*             B E G I N N I N G              */
+/*                                            */
+/*               O F      T H E               */
+/*                                            */
+/*              W O R K S P A C E             */
+/*                                            */
+/**********************************************/
+
+
+/* function to add elements */
+/*-----------------*/
+/* DECLARE SYMBOLS */
+/*-----------------*/
+/*----------------------------------*/
+
+kill();
+
+aaplus: [a, A];
+bbplus: [B, b];
+
+/*-------------------------------*/
+/* DECLARE COMMUTATION RELATIONS */
+/*-------------------------------*/
+/*--------------------------------------*/
+
+doCommut( append(aaplus,bblus)  );
+/* nonCommut( append(aaplus,bblus)  ); */
+
+addCommut(a,A, 1);
+addCommut(B,b, 1);
+
+
+/*--------------------------------------*/
+/* set a commutation relation           */
+af(u,v) := CommutatorMatrix[ u,v ] / 2; 
+/*--------------------------------------*/
+
+
+/*-------------------*/
+/* START COMPUTATION */
+/*-------------------*/
+
+
+x: a+A;
+p: %i*(A-a);
+
+
+r1:
+ratsimp(
+  atensimp(
+     
+       p.p.p.p.p.p.p.p
+
+          )
+       );
+
+print( r1 );
+
+ 
+
+
+
+
+
+
+
