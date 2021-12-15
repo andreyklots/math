@@ -1,0 +1,46 @@
+/* Integration of propagators  */
+/*   -------  */
+
+
+intanalysis:true;
+
+assume( epsilon > 0 );
+
+A1:
+    G(x,A) := %i/(x-A+%i*epsilon);
+
+A2:
+    g(x) := G(x,1);
+
+A3:
+    f(x) := [g(x), g(-x)];
+A4:
+    F(x,A) := [G(x,A), G(-x,A)];
+
+D1:
+    delta(x) := %i * (2*%pi)^-1 * [
+                    %i/( x + %i*epsilon ) ,
+                  - %i/( x - %i*epsilon ) 
+                                  ];
+
+infix("`");
+"`"(list1,list2) := block(
+         result: [],
+         for j:1 while j<=length(list1) do(
+            for k:1 while k<=length(list2) do(
+               result: append(result, [list1[j]*list2[k]])
+                                            )
+                                         ),
+         result
+                         );
+
+I2:    
+    /*
+    integrate( F(x,A)`F(x,B)`F(x,C), x, -inf, inf  )/(2*%pi);
+    integrate( f(y-x)`f(z+x)`f(x), x, -inf, inf  )/(2*%pi);
+    integrate( delta(x-2)`[g(y-x)*g(z+x)], x, -inf, inf  );
+    */
+
+L2:
+    ev( I2, epsilon=0  );
+print("Limit: ", L2);
